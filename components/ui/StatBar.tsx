@@ -32,10 +32,10 @@ export function StatBar({
           aria-valuemin={0}
           aria-valuemax={maxValue}
           aria-label={label}
+          style={{ ["--stat-fill" as string]: `${pct}%` }}
         >
           <div
-            className={`absolute inset-y-0 left-0 ${accentFill[accent]} rounded-full transition-[width] duration-500`}
-            style={{ width: `${pct}%` }}
+            className={`absolute inset-y-0 left-0 w-[var(--stat-fill)] ${accentFill[accent]} rounded-full transition-[width] duration-500`}
           />
         </div>
         <div className="w-10 text-right text-sm tabular-nums text-zinc-700">

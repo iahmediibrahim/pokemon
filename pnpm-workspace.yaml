@@ -1,5 +1,2 @@
 allowBuilds:
   unrs-resolver: true
-minimumReleaseAgeExclude:
-  - '@tanstack/query-core@5.102.2'
-  - '@tanstack/react-query@5.102.2'
