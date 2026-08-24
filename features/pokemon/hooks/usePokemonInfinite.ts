@@ -1,8 +1,8 @@
 "use client";
 
+import { getPokemonListWithSprites } from "@/features/pokemon/api/pokemon";
 import { toCardVM } from "@/features/pokemon/model/transformers";
 import type { PokemonCardVM } from "@/features/pokemon/model/view-models";
-import { getPokemonListWithSprites } from "@/lib/api/pokemon";
 import type { PokemonWithSprite } from "@/lib/types";
 import {
   useInfiniteQuery,

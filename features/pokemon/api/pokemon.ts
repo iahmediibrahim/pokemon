@@ -1,28 +1,34 @@
-import { apiFetch, buildSpriteUrl, extractIdFromUrl } from "./client";
+import {
+  pokemonApiFetch,
+  extractIdFromUrl,
+  buildSpriteUrl,
+} from "./client";
 import type {
   PokemonDetail,
   PokemonListResponse,
   PokemonWithSprite,
-} from "../types";
+} from "@/lib/types";
+
+export interface PokemonListResponseWithSprites {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: PokemonWithSprite[];
+}
 
 export async function getPokemonList(
   limit = 10,
-  offset = 0
+  offset = 0,
 ): Promise<PokemonListResponse> {
-  return apiFetch<PokemonListResponse>(
-    `/pokemon?limit=${limit}&offset=${offset}`
+  return pokemonApiFetch<PokemonListResponse>(
+    `/pokemon?limit=${limit}&offset=${offset}`,
   );
 }
 
 export async function getPokemonListWithSprites(
   limit = 10,
-  offset = 0
-): Promise<{
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: PokemonWithSprite[];
-}> {
+  offset = 0,
+): Promise<PokemonListResponseWithSprites> {
   const response = await getPokemonList(limit, offset);
   return {
     ...response,
@@ -38,7 +44,7 @@ export async function getPokemonListWithSprites(
 }
 
 export async function getPokemonById(
-  id: number | string
+  id: number | string,
 ): Promise<PokemonDetail> {
-  return apiFetch<PokemonDetail>(`/pokemon/${id}`);
+  return pokemonApiFetch<PokemonDetail>(`/pokemon/${id}`);
 }

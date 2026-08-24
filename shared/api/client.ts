@@ -1,10 +1,3 @@
-const BASE_URL = "https://pokeapi.co/api/v2";
-
-interface FetchOptions extends RequestInit {
-  retries?: number;
-  retryDelay?: number;
-}
-
 export class ApiError extends Error {
   status?: number;
   constructor(message: string, status?: number) {
@@ -12,6 +5,12 @@ export class ApiError extends Error {
     this.name = "ApiError";
     this.status = status;
   }
+}
+
+export interface FetchOptions extends RequestInit {
+  retries?: number;
+  retryDelayMs?: number;
+  baseUrl?: string;
 }
 
 async function delay(ms: number): Promise<void> {
@@ -22,8 +21,20 @@ export async function apiFetch<T>(
   endpoint: string,
   options: FetchOptions = {},
 ): Promise<T> {
-  const { retries = 2, retryDelay = 1000, ...fetchOptions } = options;
-  const url = endpoint.startsWith("http") ? endpoint : `${BASE_URL}${endpoint}`;
+  const {
+    retries = 2,
+    retryDelayMs = 1000,
+    baseUrl,
+    headers,
+    ...fetchOptions
+  } = options;
+
+  const url =
+    endpoint.startsWith("http") || !baseUrl
+      ? endpoint
+      : `${baseUrl.replace(/\/$/, "")}${
+          endpoint.startsWith("/") ? endpoint : `/${endpoint}`
+        }`;
 
   let lastError: unknown;
 
@@ -32,7 +43,7 @@ export async function apiFetch<T>(
       const response = await fetch(url, {
         headers: {
           "Content-Type": "application/json",
-          ...fetchOptions.headers,
+          ...headers,
         },
         ...fetchOptions,
       });
@@ -47,16 +58,13 @@ export async function apiFetch<T>(
       return (await response.json()) as T;
     } catch (error) {
       lastError = error;
-      if (
-        attempt < retries &&
-        !(
-          error instanceof ApiError &&
-          error.status &&
-          error.status >= 400 &&
-          error.status < 500
-        )
-      ) {
-        await delay(retryDelay * Math.pow(2, attempt));
+      const isClientError =
+        error instanceof ApiError &&
+        error.status &&
+        error.status >= 400 &&
+        error.status < 500;
+      if (attempt < retries && !isClientError) {
+        await delay(retryDelayMs * Math.pow(2, attempt));
         continue;
       }
       break;
@@ -73,9 +81,5 @@ export async function apiFetch<T>(
 
 export function extractIdFromUrl(url: string): number {
   const matches = url.match(/\/(\d+)\/?$/);
-  return matches ? parseInt(matches[1], 10) : 0;
-}
-
-export function buildSpriteUrl(id: number): string {
-  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
+  return matches ? Number.parseInt(matches[1], 10) : 0;
 }

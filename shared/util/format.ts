@@ -30,3 +30,43 @@ export function clamp0100(n: number): number {
 export function typeLabel(name: string): string {
   return capitalize(kebabToSpaces(name));
 }
+
+export type DebouncedFn<T extends (...args: never[]) => unknown> = T & {
+  cancel: () => void;
+  flush: () => void;
+};
+
+export function debounce<T extends (...args: never[]) => unknown>(
+  fn: T,
+  waitMs: number,
+): DebouncedFn<T> {
+  let t: ReturnType<typeof setTimeout> | null = null;
+  let lastArgs: Parameters<T> | null = null;
+  const debounced = ((...args: Parameters<T>) => {
+    lastArgs = args;
+    if (t) clearTimeout(t);
+    t = setTimeout(() => {
+      t = null;
+      const a = lastArgs;
+      lastArgs = null;
+      if (a) fn(...a);
+    }, waitMs);
+  }) as DebouncedFn<T>;
+  debounced.cancel = () => {
+    if (t) {
+      clearTimeout(t);
+      t = null;
+    }
+    lastArgs = null;
+  };
+  debounced.flush = () => {
+    if (t) {
+      clearTimeout(t);
+      t = null;
+    }
+    const a = lastArgs;
+    lastArgs = null;
+    if (a) fn(...a);
+  };
+  return debounced;
+}

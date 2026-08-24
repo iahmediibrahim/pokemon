@@ -1,15 +1,11 @@
+"use client";
+
 import { Card } from "@/components/ui";
+import { usePrefetchPokemonDetail } from "@/features/pokemon/hooks/usePrefetchPokemon";
 import type { PokemonWithSprite } from "@/lib/types";
+import { capitalize, padId } from "@shared/util/format";
 import Image from "next/image";
 import Link from "next/link";
-
-function capitalize(s: string): string {
-  return s.charAt(0).toUpperCase() + s.slice(1);
-}
-
-function padId(id: number): string {
-  return `#${String(id).padStart(3, "0")}`;
-}
 
 export interface PokemonCardProps {
   pokemon: PokemonWithSprite;
@@ -17,11 +13,18 @@ export interface PokemonCardProps {
 }
 
 export function PokemonCard({ pokemon, priority = false }: PokemonCardProps) {
+  const { prefetch, cancel } = usePrefetchPokemonDetail();
+  const id = pokemon.id;
+
   return (
     <Link
       href={`/pokemon/${pokemon.id}`}
       className="group block outline-none focus-visible:ring-2 focus-visible:ring-brand-500/50 rounded-[--radius-card]"
       aria-label={`View ${pokemon.name} details`}
+      onMouseEnter={() => prefetch(id)}
+      onMouseLeave={() => cancel()}
+      onFocus={() => prefetch(id)}
+      onBlur={() => cancel()}
     >
       <Card hoverable padding="none" className="overflow-hidden">
         <div className="aspect-square bg-zinc-100 relative flex items-center justify-center p-3">

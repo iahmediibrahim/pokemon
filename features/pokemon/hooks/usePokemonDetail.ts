@@ -1,12 +1,12 @@
 "use client";
 
+import { getPokemonById } from "@/features/pokemon/api/pokemon";
 import { toDetailVM } from "@/features/pokemon/model/transformers";
 import type {
   PokemonAbilityVM,
   PokemonDetailVM,
   PokemonStatVM,
 } from "@/features/pokemon/model/view-models";
-import { getPokemonById } from "@/lib/api/pokemon";
 import type { PokemonDetail } from "@/lib/types";
 import { useQuery } from "@tanstack/react-query";
 import { pokemonQueryKeys } from "./query-keys";

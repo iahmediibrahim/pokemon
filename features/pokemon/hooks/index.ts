@@ -16,5 +16,14 @@ export type {
   UsePokemonDetailResult,
 } from "./usePokemonDetail";
 
+export {
+  usePrefetchPokemonDetail,
+  usePrefetchPokemonDetails,
+} from "./usePrefetchPokemon";
+export type {
+  UsePrefetchPokemonDetailOptions,
+  UsePrefetchPokemonDetailResult,
+} from "./usePrefetchPokemon";
+
 export { pokemonQueryKeys } from "./query-keys";
 export type { PokemonQueryKeys } from "./query-keys";
