@@ -1,4 +1,3 @@
-import type { PokemonType } from "@/lib/types";
 import type { PokemonTypeName } from "@/features/pokemon/components/TypeBadge";
 
 export interface PokemonCardVM {

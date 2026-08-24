@@ -3,7 +3,7 @@
 import { PaginatedListView } from "@/components/ui/list/PaginatedListView";
 import { PokemonCard } from "@/features/pokemon/components/PokemonCard";
 import { usePokemonList } from "@/features/pokemon/hooks/usePokemonList";
-import type { PokemonWithSprite } from "@/lib/types";
+import type { PokemonWithSprite } from "@/features/pokemon/model/api-contracts";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 

@@ -1,7 +1,11 @@
 "use client";
 
-import { QueryClient, QueryClientProvider, isServer } from "@tanstack/react-query";
-import { useState, type ReactNode } from "react";
+import {
+  QueryClient,
+  QueryClientProvider,
+  isServer,
+} from "@tanstack/react-query";
+import { type ReactNode } from "react";
 
 function makeQueryClient() {
   return new QueryClient({
@@ -9,7 +13,8 @@ function makeQueryClient() {
       queries: {
         staleTime: 60 * 1000,
         retry: (failureCount, error) => {
-          if (error instanceof Error && error.message.includes("404")) return false;
+          if (error instanceof Error && error.message.includes("404"))
+            return false;
           return failureCount < 2;
         },
         refetchOnWindowFocus: !isServer,

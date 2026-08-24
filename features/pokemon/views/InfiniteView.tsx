@@ -3,7 +3,7 @@
 import { InfiniteLoadMoreView } from "@/components/ui/list/InfiniteLoadMoreView";
 import { PokemonCard } from "@/features/pokemon/components/PokemonCard";
 import { usePokemonInfinite } from "@/features/pokemon/hooks/usePokemonInfinite";
-import type { PokemonWithSprite } from "@/lib/types";
+import type { PokemonWithSprite } from "@/features/pokemon/model/api-contracts";
 
 const PAGE_SIZE = 20;
 

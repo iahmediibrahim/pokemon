@@ -1,3 +1,13 @@
+// ============================================================================
+// PokéAPI wire contracts (DTOs = Data Transfer Objects)
+//
+// These shapes describe exactly what the PokéAPI JSON payloads look like,
+// with zero presentation logic. They are returned by the feature's API layer
+// (`features/pokemon/api/*`) and consumed by pure transformers that turn them
+// into ViewModels for the UI layer.
+//
+// ============================================================================
+
 export interface PokemonListItem {
   name: string;
   url: string;
@@ -60,7 +70,18 @@ export interface PokemonListResponse {
   results: PokemonListItem[];
 }
 
+// ============================================================================
+// Internal DTOs (produced by the feature layer, not PokéAPI directly)
+// ============================================================================
+
 export interface PokemonWithSprite extends PokemonListItem {
   id: number;
   sprite: string;
+}
+
+export interface PokemonListResponseWithSprites {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: PokemonWithSprite[];
 }

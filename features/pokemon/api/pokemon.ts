@@ -1,20 +1,9 @@
-import {
-  pokemonApiFetch,
-  extractIdFromUrl,
-  buildSpriteUrl,
-} from "./client";
 import type {
   PokemonDetail,
   PokemonListResponse,
-  PokemonWithSprite,
-} from "@/lib/types";
-
-export interface PokemonListResponseWithSprites {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: PokemonWithSprite[];
-}
+  PokemonListResponseWithSprites,
+} from "@/features/pokemon/model/api-contracts";
+import { buildSpriteUrl, extractIdFromUrl, pokemonApiFetch } from "./client";
 
 export async function getPokemonList(
   limit = 10,

@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/ui";
 import { usePrefetchPokemonDetail } from "@/features/pokemon/hooks/usePrefetchPokemon";
-import type { PokemonWithSprite } from "@/lib/types";
+import type { PokemonWithSprite } from "@/features/pokemon/model/api-contracts";
 import { capitalize, padId } from "@shared/util/format";
 import Image from "next/image";
 import Link from "next/link";

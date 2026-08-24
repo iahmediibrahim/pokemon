@@ -1,5 +1,5 @@
 import { ErrorState } from "@/components/ui";
-import type { PokemonWithSprite } from "@/lib/types";
+import type { PokemonWithSprite } from "@/features/pokemon/model/api-contracts";
 import type { ReactNode } from "react";
 import { PokemonCard } from "./PokemonCard";
 import { PokemonCardGridSkeleton } from "./PokemonCardSkeleton";

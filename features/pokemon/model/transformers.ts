@@ -4,7 +4,7 @@ import type {
   PokemonDetail,
   PokemonStat,
   PokemonWithSprite,
-} from "@/lib/types";
+} from "@/features/pokemon/model/api-contracts";
 import {
   capitalize,
   clamp0100,
