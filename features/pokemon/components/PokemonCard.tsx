@@ -33,6 +33,7 @@ export function PokemonCard({ pokemon, priority = false }: PokemonCardProps) {
   return (
     <Link
       href={`/pokemon/${id}`}
+      prefetch={false}
       className="group block outline-none focus-visible:ring-2 focus-visible:ring-brand-500/50 rounded-[--radius-card]"
       aria-label={`View ${displayName} details`}
       onMouseEnter={() => prefetch(id)}
