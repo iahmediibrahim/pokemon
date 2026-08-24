@@ -1,8 +1,10 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { toCardVM } from "@/features/pokemon/model/transformers";
+import type { PokemonCardVM } from "@/features/pokemon/model/view-models";
 import { getPokemonListWithSprites } from "@/lib/api/pokemon";
 import type { PokemonWithSprite } from "@/lib/types";
+import { useQuery } from "@tanstack/react-query";
 import { pokemonQueryKeys } from "./query-keys";
 
 export interface UsePokemonListOptions {
@@ -13,6 +15,7 @@ export interface UsePokemonListOptions {
 
 export interface UsePokemonListResult {
   pokemons: PokemonWithSprite[];
+  cards: PokemonCardVM[];
   count: number;
   hasNextPage: boolean;
   hasPrevPage: boolean;
@@ -40,11 +43,14 @@ export function usePokemonList({
     enabled,
   });
 
+  const pokemons: PokemonWithSprite[] = query.data?.results ?? [];
+  const cards: PokemonCardVM[] = pokemons.map((p) => toCardVM(p));
   const count = query.data?.count ?? 0;
-  const totalPages = Math.ceil(count / pageSize);
+  const totalPages = Math.max(1, Math.ceil(count / pageSize));
 
   return {
-    pokemons: query.data?.results ?? [],
+    pokemons,
+    cards,
     count,
     hasNextPage: page < totalPages,
     hasPrevPage: page > 1,

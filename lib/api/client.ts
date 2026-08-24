@@ -20,7 +20,7 @@ async function delay(ms: number): Promise<void> {
 
 export async function apiFetch<T>(
   endpoint: string,
-  options: FetchOptions = {}
+  options: FetchOptions = {},
 ): Promise<T> {
   const { retries = 2, retryDelay = 1000, ...fetchOptions } = options;
   const url = endpoint.startsWith("http") ? endpoint : `${BASE_URL}${endpoint}`;
@@ -40,14 +40,22 @@ export async function apiFetch<T>(
       if (!response.ok) {
         throw new ApiError(
           `Request failed with status ${response.status}`,
-          response.status
+          response.status,
         );
       }
 
       return (await response.json()) as T;
     } catch (error) {
       lastError = error;
-      if (attempt < retries && !(error instanceof ApiError && error.status && error.status >= 400 && error.status < 500)) {
+      if (
+        attempt < retries &&
+        !(
+          error instanceof ApiError &&
+          error.status &&
+          error.status >= 400 &&
+          error.status < 500
+        )
+      ) {
         await delay(retryDelay * Math.pow(2, attempt));
         continue;
       }
@@ -59,7 +67,7 @@ export async function apiFetch<T>(
     throw lastError;
   }
   throw new ApiError(
-    lastError instanceof Error ? lastError.message : "Unknown network error"
+    lastError instanceof Error ? lastError.message : "Unknown network error",
   );
 }
 

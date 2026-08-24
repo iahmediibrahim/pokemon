@@ -1,15 +1,45 @@
 @import "tailwindcss";
 
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --color-brand-50: #f5f3ff;
+  --color-brand-100: #ede9fe;
+  --color-brand-500: #a855f7;
+  --color-brand-600: #9333ea;
+
+  --color-type-normal: #a8a878;
+  --color-type-fire: #f05030;
+  --color-type-water: #6890f0;
+  --color-type-electric: #f8d030;
+  --color-type-grass: #78c850;
+  --color-type-ice: #98d8d8;
+  --color-type-fighting: #c03028;
+  --color-type-poison: #a040a0;
+  --color-type-ground: #e0c068;
+  --color-type-flying: #a890f0;
+  --color-type-psychic: #f85888;
+  --color-type-bug: #a8b820;
+  --color-type-rock: #b8a038;
+  --color-type-ghost: #705898;
+  --color-type-dragon: #7038f8;
+  --color-type-dark: #705848;
+  --color-type-steel: #b8b8d0;
+  --color-type-fairy: #ee99ac;
+
+  --radius-card: 0.75rem;
+  --radius-button: 0.5rem;
+  --radius-pill: 9999px;
+
+  --shadow-card: 0 1px 2px 0 rgb(0 0 0 / 0.04), 0 1px 3px 0 rgb(0 0 0 / 0.06);
+  --shadow-card-hover:
+    0 4px 12px -2px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.04);
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -19,8 +49,56 @@
   }
 }
 
+html,
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .bg-page-infinite {
+    background:
+      radial-gradient(
+        ellipse at top left,
+        rgb(209 250 229 / 0.8),
+        transparent 60%
+      ),
+      radial-gradient(
+        ellipse at bottom right,
+        rgb(167 243 208 / 0.7),
+        transparent 60%
+      ),
+      linear-gradient(to bottom, rgb(240 253 244), rgb(236 253 245));
+  }
+  .bg-page-pagination {
+    background:
+      radial-gradient(
+        ellipse at top left,
+        rgb(219 234 254 / 0.8),
+        transparent 60%
+      ),
+      radial-gradient(
+        ellipse at bottom right,
+        rgb(199 210 254 / 0.7),
+        transparent 60%
+      ),
+      linear-gradient(to bottom, rgb(239 246 255), rgb(238 242 255));
+  }
+  .bg-page-detail {
+    background:
+      radial-gradient(
+        ellipse at top left,
+        rgb(252 231 243 / 0.8),
+        transparent 60%
+      ),
+      radial-gradient(
+        ellipse at bottom right,
+        rgb(243 232 255 / 0.8),
+        transparent 60%
+      ),
+      linear-gradient(to bottom, rgb(253 242 248), rgb(250 245 255));
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
 }

@@ -1,8 +1,13 @@
 "use client";
 
-import { useInfiniteQuery, type QueryFunctionContext } from "@tanstack/react-query";
+import { toCardVM } from "@/features/pokemon/model/transformers";
+import type { PokemonCardVM } from "@/features/pokemon/model/view-models";
 import { getPokemonListWithSprites } from "@/lib/api/pokemon";
 import type { PokemonWithSprite } from "@/lib/types";
+import {
+  useInfiniteQuery,
+  type QueryFunctionContext,
+} from "@tanstack/react-query";
 import { pokemonQueryKeys } from "./query-keys";
 
 export interface UsePokemonInfiniteOptions {
@@ -12,6 +17,7 @@ export interface UsePokemonInfiniteOptions {
 
 export interface UsePokemonInfiniteResult {
   pokemons: PokemonWithSprite[];
+  cards: PokemonCardVM[];
   totalCount: number;
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
@@ -31,7 +37,13 @@ export function usePokemonInfinite({
   pageSize = 10,
   enabled = true,
 }: UsePokemonInfiniteOptions = {}): UsePokemonInfiniteResult {
-  const query = useInfiniteQuery<ListResponse, Error, { pages: ListResponse[]; pageParams: number[] }, PageKey, number>({
+  const query = useInfiniteQuery<
+    ListResponse,
+    Error,
+    { pages: ListResponse[]; pageParams: number[] },
+    PageKey,
+    number
+  >({
     queryKey: pokemonQueryKeys.listInfinite(pageSize),
     queryFn: async ({ pageParam }: QueryFunctionContext<PageKey, number>) => {
       return getPokemonListWithSprites(pageSize, pageParam);
@@ -48,9 +60,11 @@ export function usePokemonInfinite({
 
   const pokemons: PokemonWithSprite[] =
     query.data?.pages.flatMap((page) => page.results) ?? [];
+  const cards: PokemonCardVM[] = pokemons.map((p) => toCardVM(p));
 
   return {
     pokemons,
+    cards,
     totalCount: query.data?.pages[0]?.count ?? 0,
     hasNextPage: query.hasNextPage ?? false,
     isFetchingNextPage: query.isFetchingNextPage,

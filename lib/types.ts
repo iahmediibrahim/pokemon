@@ -23,6 +23,24 @@ export interface PokemonType {
   };
 }
 
+export interface PokemonStat {
+  base_stat: number;
+  effort: number;
+  stat: {
+    name: string;
+    url: string;
+  };
+}
+
+export interface PokemonAbility {
+  ability: {
+    name: string;
+    url: string;
+  };
+  is_hidden: boolean;
+  slot: number;
+}
+
 export interface PokemonDetail {
   id: number;
   name: string;
@@ -30,6 +48,9 @@ export interface PokemonDetail {
   height: number;
   weight: number;
   types: PokemonType[];
+  stats: PokemonStat[];
+  abilities: PokemonAbility[];
+  base_experience: number | null;
 }
 
 export interface PokemonListResponse {
