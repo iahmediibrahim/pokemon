@@ -5,6 +5,13 @@ import type {
   PokemonStat,
   PokemonWithSprite,
 } from "@/lib/types";
+import {
+  capitalize,
+  clamp0100,
+  kebabToSpaces,
+  padId,
+  typeLabel,
+} from "@/shared/util";
 import type {
   PokemonAbilityVM,
   PokemonCardVM,
@@ -30,27 +37,6 @@ const STAT_MAX: Record<string, number> = {
   "special-defense": 255,
   speed: 255,
 };
-
-export function capitalize(s: string): string {
-  if (!s) return "";
-  return s.charAt(0).toUpperCase() + s.slice(1);
-}
-
-export function kebabToSpaces(s: string): string {
-  return s.replace(/-/g, " ");
-}
-
-export function padId(id: number): string {
-  return `#${String(id).padStart(3, "0")}`;
-}
-
-function clamp0100(n: number): number {
-  return Math.max(0, Math.min(100, n));
-}
-
-export function typeLabel(name: string): string {
-  return capitalize(kebabToSpaces(name));
-}
 
 export function toTypeVM(raw: { type: { name: string } }): PokemonTypeVM {
   const name = raw.type.name as PokemonTypeName;
