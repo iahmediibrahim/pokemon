@@ -1,7 +1,6 @@
 "use client";
 
 import { getPokemonListWithSprites } from "@/features/pokemon/api/pokemon";
-import type { PokemonWithSprite } from "@/features/pokemon/model/api-contracts";
 import { toCardVM } from "@/features/pokemon/model/transformers";
 import type { PokemonCardVM } from "@/features/pokemon/model/view-models";
 import {
@@ -17,12 +16,10 @@ export interface UsePokemonInfiniteOptions {
 }
 
 export interface UsePokemonInfiniteResult {
-  pokemons: PokemonWithSprite[];
   cards: PokemonCardVM[];
   totalCount: number;
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
-  isLoading: boolean;
   isPending: boolean;
   isFetching: boolean;
   isError: boolean;
@@ -59,17 +56,15 @@ export function usePokemonInfinite({
     enabled,
   });
 
-  const pokemons: PokemonWithSprite[] =
-    query.data?.pages.flatMap((page) => page.results) ?? [];
-  const cards: PokemonCardVM[] = pokemons.map((p) => toCardVM(p));
+  const cards: PokemonCardVM[] = (query.data?.pages ?? []).flatMap((page) =>
+    page.results.map((p) => toCardVM(p)),
+  );
 
   return {
-    pokemons,
     cards,
     totalCount: query.data?.pages[0]?.count ?? 0,
     hasNextPage: query.hasNextPage ?? false,
     isFetchingNextPage: query.isFetchingNextPage,
-    isLoading: query.isLoading,
     isPending: query.isPending,
     isFetching: query.isFetching,
     isError: query.isError,

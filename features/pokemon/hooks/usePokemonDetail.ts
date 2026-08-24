@@ -3,11 +3,7 @@
 import { getPokemonById } from "@/features/pokemon/api/pokemon";
 import type { PokemonDetail } from "@/features/pokemon/model/api-contracts";
 import { toDetailVM } from "@/features/pokemon/model/transformers";
-import type {
-  PokemonAbilityVM,
-  PokemonDetailVM,
-  PokemonStatVM,
-} from "@/features/pokemon/model/view-models";
+import type { PokemonDetailVM } from "@/features/pokemon/model/view-models";
 import { useQuery } from "@tanstack/react-query";
 import { pokemonQueryKeys } from "./query-keys";
 
@@ -17,17 +13,7 @@ export interface UsePokemonDetailOptions {
 }
 
 export interface UsePokemonDetailResult {
-  pokemon: PokemonDetail | undefined;
   detail: PokemonDetailVM | undefined;
-  heightMeters: number;
-  weightKilograms: number;
-  typeNames: string[];
-  spriteUrl: string | null;
-  officialArtworkUrl: string | null;
-  baseStats: PokemonStatVM[];
-  abilities: PokemonAbilityVM[];
-  baseExperience: number | null;
-  isLoading: boolean;
   isPending: boolean;
   isFetching: boolean;
   isError: boolean;
@@ -46,21 +32,10 @@ export function usePokemonDetail({
     staleTime: 10 * 60 * 1000,
   });
 
-  const pokemon = query.data;
-  const detail = pokemon ? toDetailVM(pokemon) : undefined;
+  const detail = query.data ? toDetailVM(query.data) : undefined;
 
   return {
-    pokemon,
     detail,
-    heightMeters: detail?.heightMeters ?? 0,
-    weightKilograms: detail?.weightKilograms ?? 0,
-    typeNames: detail?.typeNames.map(String) ?? [],
-    spriteUrl: detail?.spriteUrl ?? null,
-    officialArtworkUrl: detail?.officialArtworkUrl ?? null,
-    baseStats: detail?.baseStats ?? [],
-    abilities: detail?.abilities ?? [],
-    baseExperience: detail?.baseExperience ?? null,
-    isLoading: query.isLoading,
     isPending: query.isPending,
     isFetching: query.isFetching,
     isError: query.isError,

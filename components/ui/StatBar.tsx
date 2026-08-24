@@ -2,6 +2,7 @@ interface StatBarProps {
   label: string;
   value: number;
   maxValue?: number;
+  percentage?: number;
   accent?: "default" | "fire" | "water" | "grass";
 }
 
@@ -16,9 +17,13 @@ export function StatBar({
   label,
   value,
   maxValue = 255,
+  percentage,
   accent = "default",
 }: StatBarProps) {
-  const pct = Math.max(0, Math.min(100, (value / maxValue) * 100));
+  const pct =
+    percentage != null
+      ? Math.max(0, Math.min(100, percentage))
+      : Math.max(0, Math.min(100, (value / maxValue) * 100));
   return (
     <div className="flex items-center gap-4 py-1.5">
       <div className="w-24 flex-shrink-0 text-sm font-medium text-zinc-700">

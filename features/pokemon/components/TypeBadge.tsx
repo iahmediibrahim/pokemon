@@ -1,8 +1,11 @@
 export type { PokemonTypeName } from "@/features/pokemon/model/api-contracts";
 import type { PokemonTypeName } from "@/features/pokemon/model/api-contracts";
+import type { PokemonTypeVM } from "@/features/pokemon/model/view-models";
+
+type TypeBadgeType = PokemonTypeName | string | PokemonTypeVM;
 
 interface TypeBadgeProps {
-  type: PokemonTypeName | string;
+  type: TypeBadgeType;
 }
 
 const TYPE_COLOR_VAR: Record<PokemonTypeName, string> = {
@@ -26,6 +29,18 @@ const TYPE_COLOR_VAR: Record<PokemonTypeName, string> = {
   fairy: "--color-type-fairy",
 };
 
+function resolveType(type: TypeBadgeType): {
+  name: PokemonTypeName;
+  label: string;
+} {
+  if (typeof type === "object") {
+    return { name: type.name as PokemonTypeName, label: type.label };
+  }
+  const name = type.toLowerCase() as PokemonTypeName;
+  const label = name.charAt(0).toUpperCase() + name.slice(1);
+  return { name, label };
+}
+
 export function getTypeColorVar(type: string): string {
   return (
     TYPE_COLOR_VAR[type.toLowerCase() as PokemonTypeName] ??
@@ -33,13 +48,9 @@ export function getTypeColorVar(type: string): string {
   );
 }
 
-function titleCase(s: string): string {
-  return s.charAt(0).toUpperCase() + s.slice(1);
-}
-
 export function TypeBadge({ type }: TypeBadgeProps) {
-  const key = type.toLowerCase() as PokemonTypeName;
-  const colorVar = getTypeColorVar(key);
+  const { name, label } = resolveType(type);
+  const colorVar = getTypeColorVar(name);
   const style = {
     backgroundColor: `color-mix(in srgb, var(${colorVar}) 12%, transparent)`,
     color: `var(${colorVar})`,
@@ -51,9 +62,9 @@ export function TypeBadge({ type }: TypeBadgeProps) {
       className="inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold capitalize"
       style={style}
       role="img"
-      aria-label={`${type} type`}
+      aria-label={`${label} type`}
     >
-      {titleCase(type)}
+      {label}
     </span>
   );
 }

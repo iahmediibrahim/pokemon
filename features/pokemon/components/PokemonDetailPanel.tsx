@@ -1,44 +1,26 @@
 import { StatBar } from "@/components/ui/StatBar";
-import type {
-  PokemonAbilityVM,
-  PokemonStatVM,
-} from "@/features/pokemon/model/view-models";
+import type { PokemonDetailVM } from "@/features/pokemon/model/view-models";
 import Image from "next/image";
 import { TypeBadge } from "./TypeBadge";
 
 interface PokemonDetailPanelProps {
-  name: string;
-  id: number;
-  officialArtworkUrl: string | null;
-  spriteUrl: string | null;
-  typeNames: string[];
-  heightMeters: number;
-  weightKilograms: number;
-  baseStats: PokemonStatVM[];
-  abilities: PokemonAbilityVM[];
-  baseExperience: number | null;
+  detail: PokemonDetailVM;
 }
 
-function capitalize(s: string): string {
-  return s.charAt(0).toUpperCase() + s.slice(1);
-}
-
-function padId(id: number): string {
-  return `#${String(id).padStart(3, "0")}`;
-}
-
-export function PokemonDetailPanel({
-  name,
-  id,
-  officialArtworkUrl,
-  spriteUrl,
-  typeNames,
-  heightMeters,
-  weightKilograms,
-  baseStats,
-  abilities,
-  baseExperience,
-}: PokemonDetailPanelProps) {
+export function PokemonDetailPanel({ detail }: PokemonDetailPanelProps) {
+  const {
+    displayName,
+    paddedId,
+    name,
+    officialArtworkUrl,
+    spriteUrl,
+    types,
+    heightDisplay,
+    weightDisplay,
+    baseStats,
+    abilities,
+    baseExperienceDisplay,
+  } = detail;
   const imageUrl = officialArtworkUrl ?? spriteUrl;
 
   return (
@@ -53,11 +35,9 @@ export function PokemonDetailPanel({
           >
             <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" />
           </svg>
-          <h1 className="text-3xl font-bold tracking-tight">
-            {capitalize(name)}
-          </h1>
+          <h1 className="text-3xl font-bold tracking-tight">{displayName}</h1>
         </div>
-        <p className="mt-2 text-sm text-white/80 tabular-nums">{padId(id)}</p>
+        <p className="mt-2 text-sm text-white/80 tabular-nums">{paddedId}</p>
       </div>
 
       <div className="grid gap-8 p-6 md:grid-cols-2 md:p-10 lg:gap-12">
@@ -76,8 +56,8 @@ export function PokemonDetailPanel({
           </div>
 
           <div className="flex flex-wrap justify-center gap-2">
-            {typeNames.map((t) => (
-              <TypeBadge key={t} type={t} />
+            {types.map((t) => (
+              <TypeBadge key={t.name} type={t} />
             ))}
           </div>
 
@@ -109,7 +89,7 @@ export function PokemonDetailPanel({
                 Height
               </div>
               <div className="mt-1 text-xl font-bold text-zinc-900 tabular-nums">
-                {heightMeters.toFixed(1)} m
+                {heightDisplay}
               </div>
             </div>
             <div className="rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-4 text-center">
@@ -130,7 +110,7 @@ export function PokemonDetailPanel({
                 Weight
               </div>
               <div className="mt-1 text-xl font-bold text-zinc-900 tabular-nums">
-                {weightKilograms.toFixed(1)} kg
+                {weightDisplay}
               </div>
             </div>
           </div>
@@ -145,6 +125,8 @@ export function PokemonDetailPanel({
                   key={stat.name}
                   label={stat.label}
                   value={stat.baseValue}
+                  maxValue={stat.maxValue}
+                  percentage={stat.percentage}
                 />
               ))}
             </div>
@@ -174,7 +156,7 @@ export function PokemonDetailPanel({
               Base Experience
             </h2>
             <p className="text-2xl font-bold text-[color:var(--color-brand-500)] tabular-nums">
-              {baseExperience != null ? `${baseExperience} XP` : "—"}
+              {baseExperienceDisplay}
             </p>
           </section>
         </div>

@@ -40,21 +40,9 @@ interface PokemonDetailClientProps {
 }
 
 export function PokemonDetailClient({ id }: PokemonDetailClientProps) {
-  const {
-    pokemon,
-    heightMeters,
-    weightKilograms,
-    typeNames,
-    spriteUrl,
-    officialArtworkUrl,
-    baseStats,
-    abilities,
-    baseExperience,
-    isPending,
-    isError,
-    error,
-    refetch,
-  } = usePokemonDetail({ id });
+  const { detail, isPending, isError, error, refetch } = usePokemonDetail({
+    id,
+  });
 
   const handleRetry = useCallback(() => {
     void refetch();
@@ -75,19 +63,8 @@ export function PokemonDetailClient({ id }: PokemonDetailClientProps) {
             message={error?.message ?? "Please check the ID and try again."}
             onRetry={handleRetry}
           />
-        ) : pokemon ? (
-          <PokemonDetailPanel
-            name={pokemon.name}
-            id={pokemon.id}
-            officialArtworkUrl={officialArtworkUrl}
-            spriteUrl={spriteUrl}
-            typeNames={typeNames}
-            heightMeters={heightMeters}
-            weightKilograms={weightKilograms}
-            baseStats={baseStats}
-            abilities={abilities}
-            baseExperience={baseExperience}
-          />
+        ) : detail ? (
+          <PokemonDetailPanel detail={detail} />
         ) : null}
       </div>
     </div>
