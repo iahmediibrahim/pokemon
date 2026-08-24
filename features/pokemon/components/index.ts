@@ -10,4 +10,5 @@ export { PokemonDetailClient } from "./PokemonDetailClient";
 export { PokemonDetailPanel } from "./PokemonDetailPanel";
 export { PokemonDetailSkeleton } from "./PokemonDetailSkeleton";
 export { PokemonGrid } from "./PokemonGrid";
+export { PokemonSilhouette } from "./PokemonSilhouette";
 export { TypeBadge } from "./TypeBadge";

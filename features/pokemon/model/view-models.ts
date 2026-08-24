@@ -5,7 +5,7 @@ export interface PokemonCardVM {
   name: string;
   displayName: string;
   paddedId: string;
-  spriteUrl: string;
+  officialArtworkUrl: string;
   primaryType: PokemonTypeName;
   secondaryType?: PokemonTypeName;
 }

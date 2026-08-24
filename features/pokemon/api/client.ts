@@ -1,5 +1,5 @@
 import { apiFetch, extractIdFromUrl } from "@shared/api/client";
-import { POKEAPI_BASE_URL, buildSpriteUrl } from "./constants";
+import { POKEAPI_BASE_URL, buildOfficialArtworkUrl } from "./constants";
 
 export type FetchOptions = RequestInit & {
   retries?: number;
@@ -16,4 +16,4 @@ export function pokemonApiFetch<T>(
   });
 }
 
-export { extractIdFromUrl, buildSpriteUrl };
+export { buildOfficialArtworkUrl, extractIdFromUrl };

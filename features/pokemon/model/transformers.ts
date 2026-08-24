@@ -71,7 +71,7 @@ export function toCardVM(p: PokemonWithSprite): PokemonCardVM {
     name: p.name,
     displayName: capitalize(p.name),
     paddedId: padId(p.id),
-    spriteUrl: p.sprite,
+    officialArtworkUrl: p.officialArtwork,
     primaryType: "normal",
     secondaryType: undefined,
   };

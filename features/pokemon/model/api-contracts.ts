@@ -96,7 +96,7 @@ export interface PokemonListResponse {
 
 export interface PokemonWithSprite extends PokemonListItem {
   id: number;
-  sprite: string;
+  officialArtwork: string;
 }
 
 export interface PokemonListResponseWithSprites {

@@ -3,7 +3,11 @@ import type {
   PokemonListResponse,
   PokemonListResponseWithSprites,
 } from "@/features/pokemon/model/api-contracts";
-import { buildSpriteUrl, extractIdFromUrl, pokemonApiFetch } from "./client";
+import {
+  buildOfficialArtworkUrl,
+  extractIdFromUrl,
+  pokemonApiFetch,
+} from "./client";
 
 export async function getPokemonList(
   limit = 10,
@@ -26,7 +30,7 @@ export async function getPokemonListWithSprites(
       return {
         ...pokemon,
         id,
-        sprite: buildSpriteUrl(id),
+        officialArtwork: buildOfficialArtworkUrl(id),
       };
     }),
   };
