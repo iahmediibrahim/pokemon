@@ -3,8 +3,7 @@
 import type { ReactNode } from "react";
 import { Button } from "../Button";
 import { ErrorState } from "../ErrorState";
-import { LoadingSpinner } from "../LoadingSpinner";
-import { Skeleton } from "../Skeleton";
+import { ListSkeletonGrid } from "./ListSkeletonGrid";
 
 export interface InfiniteLoadMoreViewProps<T> {
   items: T[];
@@ -59,11 +58,7 @@ export function InfiniteLoadMoreView<T>({
 
   if (isLoading && items.length === 0) {
     return (
-      <div className={gridClassName}>
-        {Array.from({ length: skeletonCount }).map((_, i) => (
-          <Skeleton key={i} className="aspect-[3/4] w-full" rounded="md" />
-        ))}
-      </div>
+      <ListSkeletonGrid count={skeletonCount} gridClassName={gridClassName} />
     );
   }
 
@@ -102,10 +97,6 @@ export function InfiniteLoadMoreView<T>({
           <p className="text-xs font-medium text-zinc-500" aria-live="polite">
             {loadedCountLabel(items.length)}
           </p>
-        )}
-
-        {isFetchingNextPage && (
-          <LoadingSpinner label={loadingMoreLabel} tone="brand" />
         )}
       </div>
     </div>

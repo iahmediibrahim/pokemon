@@ -1,28 +1,11 @@
-export type PokemonTypeName =
-  | "normal"
-  | "fire"
-  | "water"
-  | "electric"
-  | "grass"
-  | "ice"
-  | "fighting"
-  | "poison"
-  | "ground"
-  | "flying"
-  | "psychic"
-  | "bug"
-  | "rock"
-  | "ghost"
-  | "dragon"
-  | "dark"
-  | "steel"
-  | "fairy";
+export type { PokemonTypeName } from "@/features/pokemon/model/api-contracts";
+import type { PokemonTypeName } from "@/features/pokemon/model/api-contracts";
 
 interface TypeBadgeProps {
   type: PokemonTypeName | string;
 }
 
-const VAR_MAP: Record<PokemonTypeName, string> = {
+const TYPE_COLOR_VAR: Record<PokemonTypeName, string> = {
   normal: "--color-type-normal",
   fire: "--color-type-fire",
   water: "--color-type-water",
@@ -43,13 +26,20 @@ const VAR_MAP: Record<PokemonTypeName, string> = {
   fairy: "--color-type-fairy",
 };
 
+export function getTypeColorVar(type: string): string {
+  return (
+    TYPE_COLOR_VAR[type.toLowerCase() as PokemonTypeName] ??
+    TYPE_COLOR_VAR.normal
+  );
+}
+
 function titleCase(s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
 export function TypeBadge({ type }: TypeBadgeProps) {
   const key = type.toLowerCase() as PokemonTypeName;
-  const colorVar = VAR_MAP[key] ?? "--color-type-normal";
+  const colorVar = getTypeColorVar(key);
   const style = {
     backgroundColor: `color-mix(in srgb, var(${colorVar}) 12%, transparent)`,
     color: `var(${colorVar})`,

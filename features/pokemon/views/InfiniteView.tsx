@@ -3,13 +3,13 @@
 import { InfiniteLoadMoreView } from "@/components/ui/list/InfiniteLoadMoreView";
 import { PokemonCard } from "@/features/pokemon/components/PokemonCard";
 import { usePokemonInfinite } from "@/features/pokemon/hooks/usePokemonInfinite";
-import type { PokemonWithSprite } from "@/features/pokemon/model/api-contracts";
+import type { PokemonCardVM } from "@/features/pokemon/model/view-models";
 
 const PAGE_SIZE = 20;
 
 export function InfiniteView() {
   const {
-    pokemons,
+    cards,
     hasNextPage,
     isFetchingNextPage,
     isPending,
@@ -20,8 +20,8 @@ export function InfiniteView() {
   } = usePokemonInfinite({ pageSize: PAGE_SIZE });
 
   return (
-    <InfiniteLoadMoreView<PokemonWithSprite>
-      items={pokemons}
+    <InfiniteLoadMoreView<PokemonCardVM>
+      items={cards}
       hasNextPage={hasNextPage}
       isLoading={isPending}
       isFetchingNextPage={isFetchingNextPage}

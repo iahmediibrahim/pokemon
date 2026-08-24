@@ -65,18 +65,15 @@ export function toAbilityVM(ability: PokemonAbility): PokemonAbilityVM {
   };
 }
 
-export function toCardVM(
-  p: PokemonWithSprite,
-  extra?: { primaryType?: PokemonTypeName; secondaryType?: PokemonTypeName },
-): PokemonCardVM {
+export function toCardVM(p: PokemonWithSprite): PokemonCardVM {
   return {
     id: p.id,
     name: p.name,
     displayName: capitalize(p.name),
     paddedId: padId(p.id),
     spriteUrl: p.sprite,
-    primaryType: extra?.primaryType ?? ("normal" as PokemonTypeName),
-    secondaryType: extra?.secondaryType,
+    primaryType: "normal",
+    secondaryType: undefined,
   };
 }
 

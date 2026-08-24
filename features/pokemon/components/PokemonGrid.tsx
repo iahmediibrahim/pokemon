@@ -1,11 +1,11 @@
 import { ErrorState } from "@/components/ui";
-import type { PokemonWithSprite } from "@/features/pokemon/model/api-contracts";
+import type { PokemonCardVM } from "@/features/pokemon/model/view-models";
 import type { ReactNode } from "react";
 import { PokemonCard } from "./PokemonCard";
 import { PokemonCardGridSkeleton } from "./PokemonCardSkeleton";
 
 interface PokemonGridProps {
-  pokemons: PokemonWithSprite[];
+  cards: PokemonCardVM[];
   isLoading?: boolean;
   isError?: boolean;
   errorMessage?: string;
@@ -15,7 +15,7 @@ interface PokemonGridProps {
 }
 
 export function PokemonGrid({
-  pokemons,
+  cards,
   isLoading = false,
   isError = false,
   errorMessage,
@@ -33,11 +33,11 @@ export function PokemonGrid({
     );
   }
 
-  if (isLoading && pokemons.length === 0) {
+  if (isLoading && cards.length === 0) {
     return <PokemonCardGridSkeleton count={skeletonCount} />;
   }
 
-  if (pokemons.length === 0) {
+  if (cards.length === 0) {
     return (
       <div className="py-16 text-center text-sm text-zinc-500">
         No Pokémon found.
@@ -48,7 +48,7 @@ export function PokemonGrid({
   return (
     <div className="flex flex-col gap-6">
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-        {pokemons.map((p, i) => (
+        {cards.map((p, i) => (
           <PokemonCard key={`${p.id}-${i}`} pokemon={p} priority={i < 4} />
         ))}
       </div>

@@ -2,9 +2,8 @@
 
 import type { ReactNode } from "react";
 import { ErrorState } from "../ErrorState";
-import { LoadingSpinner } from "../LoadingSpinner";
 import { Pagination } from "../Pagination";
-import { Skeleton } from "../Skeleton";
+import { ListSkeletonGrid } from "./ListSkeletonGrid";
 
 export interface PaginatedListViewProps<T> {
   items: T[];
@@ -43,7 +42,6 @@ export function PaginatedListView<T>({
   gridClassName = "grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4",
   getItemKey = (_, i) => i,
   emptyMessage = "No items found.",
-  fetchingLabel = "Loading page…",
 }: PaginatedListViewProps<T>) {
   if (isError) {
     return <ErrorState message={errorMessage} onRetry={onRetry} compact />;
@@ -51,11 +49,7 @@ export function PaginatedListView<T>({
 
   if (isLoading && items.length === 0) {
     return (
-      <div className={gridClassName}>
-        {Array.from({ length: skeletonCount }).map((_, i) => (
-          <Skeleton key={i} className="aspect-[3/4] w-full" rounded="md" />
-        ))}
-      </div>
+      <ListSkeletonGrid count={skeletonCount} gridClassName={gridClassName} />
     );
   }
 
@@ -67,13 +61,19 @@ export function PaginatedListView<T>({
     );
   }
 
+  const showSkeletonOverlay = isFetching && !isLoading;
+
   return (
     <div className="flex flex-col gap-8">
-      <div className={gridClassName}>
-        {items.map((item, i) => (
-          <div key={getItemKey(item, i)}>{renderItem(item, i)}</div>
-        ))}
-      </div>
+      {showSkeletonOverlay ? (
+        <ListSkeletonGrid count={skeletonCount} gridClassName={gridClassName} />
+      ) : (
+        <div className={gridClassName}>
+          {items.map((item, i) => (
+            <div key={getItemKey(item, i)}>{renderItem(item, i)}</div>
+          ))}
+        </div>
+      )}
 
       <div className="pt-4 flex items-center justify-center">
         <Pagination
@@ -84,12 +84,6 @@ export function PaginatedListView<T>({
           totalItems={totalItems}
         />
       </div>
-
-      {isFetching && !isLoading && (
-        <div className="flex justify-center py-2">
-          <LoadingSpinner label={fetchingLabel} />
-        </div>
-      )}
     </div>
   );
 }
