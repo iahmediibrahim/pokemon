@@ -8,6 +8,7 @@ import {
   useInfiniteQuery,
   type QueryFunctionContext,
 } from "@tanstack/react-query";
+import type { PokemonQueryKeyListsInfinite } from "./query-keys";
 import { pokemonQueryKeys } from "./query-keys";
 
 export interface UsePokemonInfiniteOptions {
@@ -31,7 +32,7 @@ export interface UsePokemonInfiniteResult {
 }
 
 type ListResponse = Awaited<ReturnType<typeof getPokemonListWithSprites>>;
-type PageKey = ReturnType<typeof pokemonQueryKeys.listInfinite>;
+type PageKey = PokemonQueryKeyListsInfinite;
 
 export function usePokemonInfinite({
   pageSize = 10,
