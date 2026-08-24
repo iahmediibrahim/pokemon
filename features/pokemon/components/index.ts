@@ -6,6 +6,7 @@ export {
   PokemonCardGridSkeleton,
   PokemonCardSkeleton,
 } from "./PokemonCardSkeleton";
+export { PokemonDetailClient } from "./PokemonDetailClient";
 export { PokemonDetailPanel } from "./PokemonDetailPanel";
 export { PokemonDetailSkeleton } from "./PokemonDetailSkeleton";
 export { PokemonGrid } from "./PokemonGrid";
