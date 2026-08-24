@@ -7,5 +7,6 @@ export {
   PokemonCardSkeleton,
 } from "./PokemonCardSkeleton";
 export { PokemonDetailPanel } from "./PokemonDetailPanel";
+export { PokemonDetailSkeleton } from "./PokemonDetailSkeleton";
 export { PokemonGrid } from "./PokemonGrid";
 export { TypeBadge } from "./TypeBadge";

@@ -8,7 +8,6 @@ import { getPokemonById } from "../api";
 import { pokemonQueryKeys } from "./query-keys";
 
 export interface UsePrefetchPokemonDetailOptions {
-  staleTimeMs?: number;
   debounceMs?: number;
   prefetchRoute?: boolean;
 }
@@ -21,22 +20,19 @@ export interface UsePrefetchPokemonDetailResult {
 export function usePrefetchPokemonDetail(
   options: UsePrefetchPokemonDetailOptions = {},
 ): UsePrefetchPokemonDetailResult {
-  const {
-    staleTimeMs = 10 * 60 * 1000,
-    debounceMs = 120,
-    prefetchRoute = true,
-  } = options;
+  const { debounceMs = 120, prefetchRoute = true } = options;
   const queryClient = useQueryClient();
   const router = useRouter();
 
   const doPrefetch = useCallback(
     (id: number) => {
       if (!id) return;
-      queryClient
-        .prefetchQuery({
-          queryKey: pokemonQueryKeys.detailById(id),
-          queryFn: () => getPokemonById(id),
-          staleTime: staleTimeMs,
+      const key = pokemonQueryKeys.detailById(id);
+      if (queryClient.getQueryData(key)) return;
+
+      getPokemonById(id)
+        .then((data) => {
+          queryClient.setQueryData(key, data, { updatedAt: Date.now() });
         })
         .catch(() => undefined);
 
@@ -48,7 +44,7 @@ export function usePrefetchPokemonDetail(
         }
       }
     },
-    [queryClient, router, staleTimeMs, prefetchRoute],
+    [queryClient, router, prefetchRoute],
   );
 
   const debouncedPrefetch = useMemo<DebouncedFn<(id: number) => void>>(
@@ -65,35 +61,4 @@ export function usePrefetchPokemonDetail(
     prefetch: debouncedPrefetch,
     cancel: debouncedPrefetch.cancel,
   };
-}
-
-export function usePrefetchPokemonDetails(
-  options: Omit<UsePrefetchPokemonDetailOptions, "debounceMs"> = {},
-): (ids: number[]) => void {
-  const { staleTimeMs = 10 * 60 * 1000, prefetchRoute = true } = options;
-  const queryClient = useQueryClient();
-  const router = useRouter();
-
-  return useCallback(
-    (ids: number[]) => {
-      ids.forEach((id) => {
-        if (!id) return;
-        queryClient
-          .prefetchQuery({
-            queryKey: pokemonQueryKeys.detailById(id),
-            queryFn: () => getPokemonById(id),
-            staleTime: staleTimeMs,
-          })
-          .catch(() => undefined);
-        if (prefetchRoute) {
-          try {
-            router.prefetch(`/pokemon/${id}`);
-          } catch {
-            // silent
-          }
-        }
-      });
-    },
-    [queryClient, router, staleTimeMs, prefetchRoute],
-  );
 }

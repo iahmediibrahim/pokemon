@@ -16,10 +16,7 @@ export type {
   UsePokemonDetailResult,
 } from "./usePokemonDetail";
 
-export {
-  usePrefetchPokemonDetail,
-  usePrefetchPokemonDetails,
-} from "./usePrefetchPokemon";
+export { usePrefetchPokemonDetail } from "./usePrefetchPokemon";
 export type {
   UsePrefetchPokemonDetailOptions,
   UsePrefetchPokemonDetailResult,

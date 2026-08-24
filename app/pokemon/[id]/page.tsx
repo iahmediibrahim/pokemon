@@ -2,8 +2,10 @@
 
 import { Button } from "@/components/ui/Button";
 import { ErrorState } from "@/components/ui/ErrorState";
-import { PokemonCardGridSkeleton } from "@/features/pokemon/components/PokemonCardSkeleton";
-import { PokemonDetailPanel } from "@/features/pokemon/components/PokemonDetailPanel";
+import {
+  PokemonDetailPanel,
+  PokemonDetailSkeleton,
+} from "@/features/pokemon/components";
 import { usePokemonDetail } from "@/features/pokemon/hooks/usePokemonDetail";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -59,7 +61,7 @@ export default function PokemonDetailPage() {
         </div>
 
         {isPending ? (
-          <PokemonCardGridSkeleton count={2} />
+          <PokemonDetailSkeleton />
         ) : isError ? (
           <ErrorState
             title="Could not load Pokémon"
