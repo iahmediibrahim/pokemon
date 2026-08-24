@@ -4,8 +4,8 @@ import { PaginatedListView } from "@/components/ui/list/PaginatedListView";
 import { PokemonCard } from "@/features/pokemon/components/PokemonCard";
 import { usePokemonList } from "@/features/pokemon/hooks/usePokemonList";
 import type { PokemonWithSprite } from "@/features/pokemon/model/api-contracts";
-import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useTransition } from "react";
 
 const PAGE_SIZE = 20;
 const MAX_SANE_PAGE = 2000;
@@ -16,23 +16,11 @@ function parsePage(raw: string | null): number {
   return Math.min(MAX_SANE_PAGE, Math.max(1, n));
 }
 
-function currentPageFromUrl(): number {
-  if (typeof window === "undefined") return 1;
-  return parsePage(new URLSearchParams(window.location.search).get("page"));
-}
-
 export function PaginationView() {
   const router = useRouter();
-  const [page, setPage] = useState<number>(1);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setPage(currentPageFromUrl());
-    setMounted(true);
-    const onPop = () => setPage(currentPageFromUrl());
-    window.addEventListener("popstate", onPop);
-    return () => window.removeEventListener("popstate", onPop);
-  }, []);
+  const searchParams = useSearchParams();
+  const page = parsePage(searchParams.get("page"));
+  const [isNavigating, startTransition] = useTransition();
 
   const {
     pokemons,
@@ -48,26 +36,29 @@ export function PaginationView() {
   const handlePageChange = useCallback(
     (next: number) => {
       if (next === page) return;
-      const params = new URLSearchParams(window.location.search);
+      const params = new URLSearchParams(searchParams);
       params.set("view", "pagination");
       params.set("page", String(next));
-      setPage(next);
-      router.replace(`/?${params.toString()}`, { scroll: false });
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      startTransition(() => {
+        router.replace(`/?${params.toString()}`, { scroll: false });
+      });
+      if (typeof window !== "undefined") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
     },
-    [page, router],
+    [page, router, searchParams],
   );
 
   return (
     <PaginatedListView<PokemonWithSprite>
-      items={mounted ? pokemons : pokemons}
+      items={pokemons}
       currentPage={page}
       totalPages={totalPages}
       totalItems={count}
       itemsShown={Math.min(page * PAGE_SIZE, count)}
-      isLoading={isPending || !mounted}
-      isFetching={isFetching && !isPending}
-      isError={mounted ? isError : false}
+      isLoading={isPending}
+      isFetching={isFetching || isNavigating}
+      isError={isError}
       errorMessage={error?.message}
       onRetry={refetch}
       skeletonCount={PAGE_SIZE}

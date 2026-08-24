@@ -1,11 +1,11 @@
 "use client";
 
-import {
-  QueryClient,
-  QueryClientProvider,
-  isServer,
-} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { type ReactNode } from "react";
+
+function isServerEnvironment(): boolean {
+  return typeof window === "undefined";
+}
 
 function makeQueryClient() {
   return new QueryClient({
@@ -17,7 +17,7 @@ function makeQueryClient() {
             return false;
           return failureCount < 2;
         },
-        refetchOnWindowFocus: !isServer,
+        refetchOnWindowFocus: !isServerEnvironment(),
       },
     },
   });
@@ -26,7 +26,7 @@ function makeQueryClient() {
 let browserQueryClient: QueryClient | undefined = undefined;
 
 function getQueryClient() {
-  if (isServer) {
+  if (isServerEnvironment()) {
     return makeQueryClient();
   }
   if (!browserQueryClient) browserQueryClient = makeQueryClient();
