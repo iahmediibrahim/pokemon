@@ -2,7 +2,14 @@
 
 import { SegmentedTabs } from "@/components/ui/SegmentedTabs";
 
-export type ViewMode = "pagination" | "infinite";
+import {
+  DEFAULT_VIEW_MODE,
+  VIEW_MODES,
+  type ViewMode,
+} from "@/features/pokemon/view-options";
+
+export { DEFAULT_VIEW_MODE, VIEW_MODES };
+export type { ViewMode };
 
 export interface PokedexHeaderProps {
   mode: ViewMode;

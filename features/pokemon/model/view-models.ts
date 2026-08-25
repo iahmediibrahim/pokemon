@@ -1,4 +1,4 @@
-import type { PokemonTypeName } from "@/features/pokemon/components/TypeBadge";
+import type { PokemonTypeName } from "@/features/pokemon/model/api-contracts";
 
 export interface PokemonCardVM {
   id: number;

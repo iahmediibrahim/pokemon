@@ -1,5 +1,4 @@
 import { Card, Skeleton } from "@/components/ui";
-import { ListSkeletonGrid } from "@/components/ui/list";
 
 export function PokemonCardSkeleton() {
   return (
@@ -12,15 +11,5 @@ export function PokemonCardSkeleton() {
         <Skeleton className="h-3 w-12 rounded" />
       </div>
     </Card>
-  );
-}
-
-export function PokemonCardGridSkeleton({ count = 10 }: { count?: number }) {
-  return (
-    <ListSkeletonGrid
-      count={count}
-      gridClassName="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4"
-      renderSkeleton={(i) => <PokemonCardSkeleton key={i} />}
-    />
   );
 }

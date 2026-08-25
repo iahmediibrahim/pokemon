@@ -4,22 +4,19 @@ import { PaginatedListView } from "@/components/ui/list/PaginatedListView";
 import { PokemonCard } from "@/features/pokemon/components/PokemonCard";
 import { usePokemonList } from "@/features/pokemon/hooks/usePokemonList";
 import type { PokemonCardVM } from "@/features/pokemon/model/view-models";
+import { parsePageParam } from "@/shared/util/validation";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useTransition } from "react";
 
 const PAGE_SIZE = 20;
 const MAX_SANE_PAGE = 2000;
 
-function parsePage(raw: string | null): number {
-  const n = raw ? Number.parseInt(raw, 10) : 1;
-  if (!Number.isFinite(n)) return 1;
-  return Math.min(MAX_SANE_PAGE, Math.max(1, n));
-}
-
 export function PaginationView() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const page = parsePage(searchParams.get("page"));
+  const page = parsePageParam(searchParams.get("page"), {
+    maxPage: MAX_SANE_PAGE,
+  });
   const [isNavigating, startTransition] = useTransition();
 
   const {

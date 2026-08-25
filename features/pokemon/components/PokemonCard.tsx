@@ -25,9 +25,9 @@ export function PokemonCard({ pokemon, priority = false }: PokemonCardProps) {
   }, []);
 
   const typeColorVar = getTypeColorVar(primaryType);
-  const cardBgStyle = {
-    backgroundImage: `radial-gradient(120% 80% at 50% 0%, color-mix(in srgb, var(${typeColorVar}) 18%, transparent) 0%, color-mix(in srgb, var(${typeColorVar}) 8%, transparent) 60%, transparent 100%)`,
-    backgroundColor: `color-mix(in srgb, var(${typeColorVar}) 6%, #fafafa)`,
+  const cardStyleVars = {
+    ["--card-gradient" as string]: `radial-gradient(120% 80% at 50% 0%, color-mix(in srgb, var(${typeColorVar}) 18%, transparent) 0%, color-mix(in srgb, var(${typeColorVar}) 8%, transparent) 60%, transparent 100%)`,
+    ["--card-bg" as string]: `color-mix(in srgb, var(${typeColorVar}) 6%, #fafafa)`,
   } satisfies React.CSSProperties;
 
   return (
@@ -43,8 +43,8 @@ export function PokemonCard({ pokemon, priority = false }: PokemonCardProps) {
     >
       <Card hoverable padding="none" className="overflow-hidden">
         <div
-          className="aspect-square relative flex items-center justify-center p-3"
-          style={cardBgStyle}
+          className="aspect-square relative flex items-center justify-center p-3 bg-[color:var(--card-bg)] [background-image:var(--card-gradient)]"
+          style={cardStyleVars}
           aria-hidden="true"
         >
           {imageErrored ? (

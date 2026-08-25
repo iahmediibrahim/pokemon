@@ -1,6 +1,6 @@
 "use client";
 
-import { debounce, type DebouncedFn } from "@shared/util/format";
+import { debounce, type DebouncedFn } from "@/shared/util/format";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo } from "react";

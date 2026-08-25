@@ -1,4 +1,4 @@
-import { apiFetch, extractIdFromUrl } from "@shared/api/client";
+import { apiFetch, extractIdFromUrl } from "@/shared/api/client";
 import { POKEAPI_BASE_URL, buildOfficialArtworkUrl } from "./constants";
 
 export type FetchOptions = RequestInit & {

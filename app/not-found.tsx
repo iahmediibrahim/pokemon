@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/Button";
+import { ChevronLeftIcon } from "@/components/ui/icons";
 import Link from "next/link";
 
 export default function NotFound() {
@@ -31,22 +32,7 @@ export default function NotFound() {
           <Button
             variant="primary"
             size="md"
-            leftIcon={
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                className="h-4 w-4"
-                aria-hidden
-              >
-                <path
-                  d="M15 19l-7-7 7-7"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            }
+            leftIcon={<ChevronLeftIcon className="h-4 w-4" />}
           >
             Back to Pokédex
           </Button>

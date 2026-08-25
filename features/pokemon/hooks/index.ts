@@ -22,9 +22,6 @@ export type {
   UsePrefetchPokemonDetailResult,
 } from "./usePrefetchPokemon";
 
-export { usePokemonInvalidators } from "./usePokemonInvalidators";
-export type { PokemonInvalidators } from "./usePokemonInvalidators";
-
 export { pokemonQueryKeys } from "./query-keys";
 export type {
   PokemonQueryKeyAll,

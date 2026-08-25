@@ -3,10 +3,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { type ReactNode } from "react";
 
-function isServerEnvironment(): boolean {
-  return typeof window === "undefined";
-}
-
 function makeQueryClient() {
   return new QueryClient({
     defaultOptions: {
@@ -17,8 +13,7 @@ function makeQueryClient() {
             return false;
           return failureCount < 2;
         },
-        refetchOnWindowFocus: !isServerEnvironment(),
-      },
+       },
     },
   });
 }
@@ -26,7 +21,7 @@ function makeQueryClient() {
 let browserQueryClient: QueryClient | undefined = undefined;
 
 function getQueryClient() {
-  if (isServerEnvironment()) {
+  if (typeof window === "undefined") {
     return makeQueryClient();
   }
   if (!browserQueryClient) browserQueryClient = makeQueryClient();

@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronLeftIcon, ChevronRightIcon } from "@/components/ui/icons";
 import { Button } from "./Button";
 
 interface PaginationProps {
@@ -55,17 +56,7 @@ export function Pagination({
           disabled={currentPage <= 1}
           onClick={() => onPageChange(currentPage - 1)}
           aria-label="Previous page"
-          leftIcon={
-            <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" aria-hidden>
-              <path
-                d="M15 19l-7-7 7-7"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          }
+          leftIcon={<ChevronLeftIcon className="h-4 w-4" />}
         >
           Previous
         </Button>
@@ -107,15 +98,7 @@ export function Pagination({
           aria-label="Next page"
         >
           Next
-          <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" aria-hidden>
-            <path
-              d="M9 5l7 7-7 7"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <ChevronRightIcon className="h-4 w-4" />
         </Button>
       </div>
       {(itemsShown !== undefined || totalItems !== undefined) && (

@@ -1,4 +1,3 @@
-export type { PokemonTypeName } from "@/features/pokemon/model/api-contracts";
 import type { PokemonTypeName } from "@/features/pokemon/model/api-contracts";
 import type { PokemonTypeVM } from "@/features/pokemon/model/view-models";
 
@@ -51,16 +50,16 @@ export function getTypeColorVar(type: string): string {
 export function TypeBadge({ type }: TypeBadgeProps) {
   const { name, label } = resolveType(type);
   const colorVar = getTypeColorVar(name);
-  const style = {
-    backgroundColor: `color-mix(in srgb, var(${colorVar}) 12%, transparent)`,
-    color: `var(${colorVar})`,
-    borderColor: `color-mix(in srgb, var(${colorVar}) 35%, transparent)`,
-  };
+  const styleVars = {
+    ["--tb-bg" as string]: `color-mix(in srgb, var(${colorVar}) 12%, transparent)`,
+    ["--tb-text" as string]: `var(${colorVar})`,
+    ["--tb-border" as string]: `color-mix(in srgb, var(${colorVar}) 35%, transparent)`,
+  } satisfies React.CSSProperties;
 
   return (
     <span
-      className="inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold capitalize"
-      style={style}
+      className="inline-flex items-center rounded-full border border-[color:var(--tb-border)] bg-[color:var(--tb-bg)] text-[color:var(--tb-text)] px-3 py-1 text-xs font-semibold capitalize"
+      style={styleVars}
       role="img"
       aria-label={`${label} type`}
     >

@@ -1,17 +1,19 @@
-import type { PokemonTypeName } from "@/features/pokemon/components/TypeBadge";
 import type {
   PokemonAbility,
   PokemonDetail,
   PokemonStat,
+  PokemonTypeName,
   PokemonWithSprite,
 } from "@/features/pokemon/model/api-contracts";
 import {
   capitalize,
   clamp0100,
+  formatKilograms,
+  formatMetric,
   kebabToSpaces,
   padId,
   typeLabel,
-} from "@/shared/util";
+} from "@/shared/util/format";
 import type {
   PokemonAbilityVM,
   PokemonCardVM,
@@ -82,8 +84,6 @@ export function toDetailVM(dto: PokemonDetail): PokemonDetailVM {
   const typeNames = types.map((t) => t.name);
   const primaryType = typeNames[0] ?? ("normal" as PokemonTypeName);
 
-  const heightMeters = dto.height / 10;
-  const weightKg = dto.weight / 10;
   const officialArtwork =
     dto.sprites.other?.["official-artwork"]?.front_default ?? null;
 
@@ -94,10 +94,10 @@ export function toDetailVM(dto: PokemonDetail): PokemonDetailVM {
     paddedId: padId(dto.id),
     spriteUrl: dto.sprites.front_default ?? null,
     officialArtworkUrl: officialArtwork ?? dto.sprites.front_default,
-    heightMeters,
-    heightDisplay: `${heightMeters.toFixed(1)} m`,
-    weightKilograms: weightKg,
-    weightDisplay: `${weightKg.toFixed(1)} kg`,
+    heightMeters: dto.height / 10,
+    heightDisplay: formatMetric(dto.height),
+    weightKilograms: dto.weight / 10,
+    weightDisplay: formatKilograms(dto.weight),
     types,
     typeNames,
     baseStats: dto.stats.map(toStatVM),
